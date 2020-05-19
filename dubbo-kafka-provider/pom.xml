@@ -56,11 +56,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.7</version>
-        </dependency>
-        <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.2.5</version>
@@ -73,10 +68,14 @@
 
         <dependency>
             <groupId>com.five.monkey</groupId>
+            <artifactId>dubbo-kafka-util</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.five.monkey</groupId>
             <artifactId>dubbo-kafka-api</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
-
         <dependency>
             <groupId>com.five.monkey</groupId>
             <artifactId>dubbo-kafka-data</artifactId>
