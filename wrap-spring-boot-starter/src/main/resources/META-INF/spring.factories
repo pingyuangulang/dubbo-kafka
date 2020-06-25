@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.five.monkey.wrap.config.WrapServiceAutoConfiguration
