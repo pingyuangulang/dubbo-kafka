@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 /**
  *
@@ -18,11 +19,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/consume/author")
 public class AuthorController {
 
+    private final String SERVICE_PROVIDER = "http://dubbo-kafka-provider";
+
     @Autowired
     private ConsumeAuthorService authorService;
 
-    @GetMapping("/{id}/getInfo")
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @GetMapping("/{id}/getInfo/by/dubbo")
     public AuthorBo getInfo(@PathVariable("id") Long id) {
         return authorService.findById(id);
+    }
+
+    @GetMapping("/{id}/getInfo/by/rest")
+    public AuthorBo getInfoByRest(@PathVariable("id") Long id) {
+        String interface_uri = "/author/{id}/getInfo";
+        return restTemplate.getForEntity(SERVICE_PROVIDER + interface_uri, AuthorBo.class, id).getBody();
     }
 }
