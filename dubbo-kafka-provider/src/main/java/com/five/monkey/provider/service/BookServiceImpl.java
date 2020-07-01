@@ -6,11 +6,14 @@ import com.five.monkey.bo.AuthorBo;
 import com.five.monkey.bo.BookInfoBo;
 import com.five.monkey.mapper.extend.BookExtendMapper;
 import com.five.monkey.model.Book;
+import com.five.monkey.provider.annotation.RedisCache;
+import com.five.monkey.provider.contains.KeyContains;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -36,6 +39,7 @@ public class BookServiceImpl implements BookService {
      * @return
      */
     @Override
+    @RedisCache(key = KeyContains.Book.BOOK_INFO, expire = 1L, timeUnit = TimeUnit.DAYS)
     public BookInfoBo findById(Long bookId) {
         BookInfoBo bookInfoBo = null;
         Book book = bookExtendMapper.selectByPrimaryKey(bookId);

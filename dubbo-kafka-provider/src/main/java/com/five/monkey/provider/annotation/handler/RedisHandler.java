@@ -6,6 +6,8 @@ import com.five.monkey.util.JsonUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -60,7 +62,7 @@ public class RedisHandler {
         RedisCache redisCache = method.getAnnotation(RedisCache.class);
         String key = String.format(redisCache.key(), args);
         long expire = redisCache.expire();
-        TimeUnit timeUnit = redisCache.timeUtil();
+        TimeUnit timeUnit = redisCache.timeUnit();
         String redisValue = stringRedisTemplate.boundValueOps(key).get();
         if (StringUtils.isNotBlank(redisValue)) {
             result = JsonUtil.parse(redisValue, returnType);
@@ -79,8 +81,8 @@ public class RedisHandler {
      *
      * @param joinPoint
      */
-    @Before("delPointCut()")
-    public void before(JoinPoint joinPoint) {
+    @AfterReturning("delPointCut()")
+    public void afterReturning(JoinPoint joinPoint) {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
         RedisDel redisDel = method.getAnnotation(RedisDel.class);

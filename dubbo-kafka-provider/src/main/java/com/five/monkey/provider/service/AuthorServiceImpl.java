@@ -39,7 +39,7 @@ public class AuthorServiceImpl implements AuthorService {
      * @return
      */
     @Override
-    @RedisCache(key = KeyContains.Author.AUTHOR_INFO, expire = 1L, timeUtil = TimeUnit.DAYS)
+    @RedisCache(key = KeyContains.Author.AUTHOR_INFO, expire = 1L, timeUnit = TimeUnit.DAYS)
     public AuthorBo findById(Long authorId) {
         Author author = authorExtendMapper.selectByPrimaryKey(authorId);
         AuthorBo authorBo = null;

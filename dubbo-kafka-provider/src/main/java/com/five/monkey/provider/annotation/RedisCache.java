@@ -37,5 +37,5 @@ public @interface RedisCache {
      *
      * @return
      */
-    TimeUnit timeUtil() default TimeUnit.HOURS;
+    TimeUnit timeUnit() default TimeUnit.HOURS;
 }
