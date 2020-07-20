@@ -1,4 +1,4 @@
-package com.five.monkey.queue;
+package com.five.monkey.util.queue;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;

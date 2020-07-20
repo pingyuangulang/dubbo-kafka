@@ -1,4 +1,4 @@
-package com.five.monkey.lock;
+package com.five.monkey.util.lock;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
