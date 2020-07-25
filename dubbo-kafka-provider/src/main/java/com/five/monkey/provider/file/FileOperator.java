@@ -1,15 +1,18 @@
 package com.five.monkey.provider.file;
 
+import com.five.monkey.provider.file.enums.FileTypeEnum;
 import com.five.monkey.provider.file.pojo.FileInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
@@ -23,24 +26,37 @@ import java.util.UUID;
 @Slf4j
 public class FileOperator {
 
+    @Value("${file.upload.path.prefix}")
+    private String fileUploadPathPrefix;
+
+
     /**
      * 文件上传
      *
      * @param file
      * @return
      */
-    public FileInfo upload(MultipartFile file) {
+    public FileInfo upload(MultipartFile file) throws IOException {
         String sourceName = file.getOriginalFilename();
         Long fileSize = file.getSize();
-        String suffix = FilenameUtils.getExtension(sourceName);
-
-
+        String extension = FilenameUtils.getExtension(sourceName);
+        FileTypeEnum fileTypeEnum = FileTypeEnum.getInstance(extension);
+        String realPath = fileUploadPathPrefix + fileTypeEnum.getDir();
+        String targetFileName = upload(file.getInputStream(), realPath, extension);
+        return new FileInfo(sourceName, targetFileName, realPath, fileTypeEnum.getType(), fileSize);
     }
 
-    String upload(InputStream inputStream, String dir, String ext) {
+    /**
+     * 文件上传
+     *
+     * @param inputStream 文件输入流
+     * @param realPath 文件上传路径
+     * @param ext 文件后缀名，如jpg,mp4,xlsx等
+     * @return 文件新名称
+     */
+    private String upload(InputStream inputStream, String realPath, String ext) {
         File file;
         String fileName;
-        String realPath = resourceConfig.getResourceUploadPath() + dir;
         do {
             fileName = UUID.randomUUID().toString() + "." + ext;
             file = new File(realPath + fileName);

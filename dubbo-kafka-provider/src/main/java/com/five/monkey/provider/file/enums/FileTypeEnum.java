@@ -1,5 +1,7 @@
 package com.five.monkey.provider.file.enums;
 
+import org.apache.commons.lang3.StringUtils;
+
 /**
  *
  *
@@ -8,15 +10,17 @@ package com.five.monkey.provider.file.enums;
  */
 public enum FileTypeEnum {
 
-    IMAGE((byte) 0, "jpg,jpeg,png,ico,tif", "图片"),
+    DEFAULT((byte) 0, "", "/default/", "默认文件"),
 
-    DOC((byte) 1, "ppt,pptx,json,txt,xls,xlsx,pdf,doc,docx", "文档"),
+    IMAGE((byte) 1, "jpg,jpeg,png,ico,tif", "/image/", "图片"),
 
-    ZIP((byte) 2, "zip,rar", "压缩包"),
+    DOC((byte) 2, "ppt,pptx,json,txt,xls,xlsx,pdf,doc,docx", "/doc/", "文档"),
 
-    AUDIO((byte) 3, "m4a,wav,mp3,wma,au,aiff,aifc,aac,flac,mp2,ogg", "音频"),
+    ZIP((byte) 3, "zip,rar", "/zip", "压缩包"),
 
-    VIDEO((byte) 4, "avi,mp4,mov,mpg,wmv,f4v,flv,vob,3gp,rmvb,webm,m4v,m3u8", "视频");
+    AUDIO((byte) 4, "m4a,wav,mp3,wma,au,aiff,aifc,aac,flac,mp2,ogg", "/audio/", "音频"),
+
+    VIDEO((byte) 5, "avi,mp4,mov,mpg,wmv,f4v,flv,vob,3gp,rmvb,webm,m4v,m3u8", "/video/", "视频");
 
     /** 文件类型 */
     private Byte type;
@@ -24,15 +28,49 @@ public enum FileTypeEnum {
     /** 文件后缀 */
     private String extensions;
 
+    /** 目录 */
+    private String dir;
+
     private String desc;
 
-    FileTypeEnum(Byte type, String extensions, String desc) {
+    FileTypeEnum(Byte type, String extensions, String dir, String desc) {
         this.type = type;
         this.extensions = extensions;
+        this.dir = dir;
         this.desc = desc;
     }
 
-    public static FileTypeEnum getInstance(String extensions) {
+    public Byte getType() {
+        return type;
+    }
 
+    public String getExtensions() {
+        return extensions;
+    }
+
+    public String getDir() {
+        return dir;
+    }
+
+    public static FileTypeEnum getInstance(String extension) {
+        if (StringUtils.isBlank(extension)) {
+            return FileTypeEnum.DEFAULT;
+        }
+        FileTypeEnum[] fileTypeEnums = FileTypeEnum.values();
+        FileTypeEnum fileTypeEnum = FileTypeEnum.DEFAULT;
+        for (FileTypeEnum typeEnum : fileTypeEnums) {
+            String extensions = typeEnum.getExtensions();
+            if (StringUtils.isBlank(extensions)) {
+                continue;
+            }
+            String[] extensionArray = extensions.split(",");
+            for (String str : extensionArray) {
+                if (StringUtils.equalsIgnoreCase(str, extension)) {
+                    fileTypeEnum = typeEnum;
+                    break;
+                }
+            }
+        }
+        return fileTypeEnum;
     }
 }
