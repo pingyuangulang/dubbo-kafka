@@ -105,6 +105,10 @@ public class HashMap<K, V> {
         return Objects.nonNull(this.getEntry(key));
     }
 
+    public boolean isNotEmpty() {
+        return this.totalElement > 0;
+    }
+
     /**
      * key的hashCode值对数组大小取余计算对应下标
      *

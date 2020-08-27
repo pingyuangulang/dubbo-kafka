@@ -25,4 +25,8 @@ public class Queue<E> {
     public E poll() {
         return this.list.removeHead();
     }
+
+    public boolean isNotEmpty() {
+        return this.list.isNotEmpty();
+    }
 }

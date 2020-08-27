@@ -25,4 +25,8 @@ public class Stack<E> {
     public E pop() {
         return this.list.removeLast();
     }
+
+    public boolean isNotEmpty() {
+        return this.list.isNotEmpty();
+    }
 }
