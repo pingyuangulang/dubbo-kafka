@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class RedisReentrantLock {
 
-    private ThreadLocal<Map<String, Integer>> threadLocal = new ThreadLocal<>();
+    private static final ThreadLocal<Map<String, Integer>> threadLocal = new ThreadLocal<>();
 
     private RedisTemplate<String, String> redisTemplate;
 
@@ -59,7 +59,7 @@ public class RedisReentrantLock {
             if (lockCount.compareTo(0) > 0) {
                 currentLocks.put(key, lockCount);
             } else {
-                currentLocks.remove(key);
+                threadLocal.remove();
                 redisTemplate.delete(key);
             }
             unLockFlag = true;
